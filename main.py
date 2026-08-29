@@ -10,8 +10,8 @@ SCREEN_HEIGHT = 900
 FPS = 60
 
 # Colors (RGB)
-BG_COLOR = (30, 30, 40)      # Dark slate blue
-PLAYER_COLOR = (0, 255, 150) # Mint green
+BG_COLOR = (150, 234, 255)      # light blue
+PLAYER_COLOR = (255, 255, 255) # Mint white
 
 # Create the display window
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
