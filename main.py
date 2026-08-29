@@ -8,6 +8,7 @@ class GameState(Enum):
     KITCHEN = auto()
     COOKING = auto()
     MALL = auto()
+    SHOPPING = auto()
     DOG = auto()
     END = auto()
 
@@ -24,8 +25,8 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
 
-        #original_start_image = pygame.image.load("start.png").convert()
-        #self.scaled_start_image = pygame.transform.scale(original_start_image, (self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
+        original_start_image = pygame.image.load("start.png").convert()
+        self.scaled_start_image = pygame.transform.scale(original_start_image, (self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
 
         original_kitchen_image = pygame.image.load("kitchen.png").convert()
         self.scaled_kitchen_image = pygame.transform.scale(original_kitchen_image, (self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
@@ -36,8 +37,11 @@ class Game:
         original_mall_image = pygame.image.load("mall.png").convert()
         self.scaled_mall_image = pygame.transform.scale(original_mall_image, (self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
 
-        #original_dog_image = pygame.image.load("dog.png").convert()
-        #self.scaled_dog_image = pygame.transform.scale(original_dog_image, (self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
+        original_shopping_image = pygame.image.load("shopping.png").convert()
+        self.scaled_shopping_image = pygame.transform.scale(original_shopping_image, (self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
+
+        original_dog_image = pygame.image.load("dog.png").convert()
+        self.scaled_dog_image = pygame.transform.scale(original_dog_image, (self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
 
         self.next_button = button.Button("Next Module", 900, 600, 200, 60, (0, 150, 0), (0, 200, 0), (255, 255, 255))
         x_pos = (self.SCREEN_WIDTH // 2) - (100 // 2)
@@ -65,6 +69,8 @@ class Game:
                 self.handle_cooking()
             elif self.current_state == GameState.MALL:
                 self.handle_mall()
+            elif self.current_state == GameState.SHOPPING:
+                self.handle_shopping()
             elif self.current_state == GameState.DOG:
                 self.handle_dog()
                 
@@ -83,6 +89,7 @@ class Game:
             if self.start_button.is_clicked(event):
                 self.current_state = GameState.KITCHEN
         self.screen.fill((0, 0, 40)) 
+        self.screen.blit(self.scaled_start_image, (0, 0))
         self.start_button.draw(self.screen)
 
         pygame.display.flip()
@@ -143,13 +150,12 @@ class Game:
             self.bakingPowderButton.draw(self.screen)
             self.butterButton.draw(self.screen)
 
-
     def handle_mall(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
             if self.next_button.is_clicked(event):
-                self.current_state = GameState.DOG 
+                self.current_state = GameState.SHOPPING 
         self.screen.fill((40, 80, 40))
         self.next_button.draw(self.screen)
 
@@ -157,8 +163,15 @@ class Game:
 
         self.next_button.draw(self.screen)
 
-
-       
+    def handle_shopping(self):
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+                if self.next_button.is_clicked(event):
+                    self.current_state = GameState.DOG 
+            
+            self.screen.blit(self.scaled_shopping_image, (0, 0))
+            self.next_button.draw(self.screen)
 
     def handle_dog(self):
         for event in pygame.event.get():
@@ -166,8 +179,8 @@ class Game:
                 self.running = False
             if self.next_button.is_clicked(event):
                 self.current_state = GameState.START 
-        self.screen.fill((40, 80, 40))
-        self.next_button.draw(self.screen)
+        self.screen.blit(self.scaled_dog_image, (0, 0))
+        #self.next_button.draw(self.screen)
 
 if __name__ == "__main__":
     game = Game()
