@@ -75,6 +75,17 @@ class Game:
         self.screen.fill((0, 0, 40)) 
         self.next_button.draw(self.screen)
 
+        pygame.display.flip()
+        self.clock.tick(60)
+
+        self.BUTTON_SIZE = 100
+
+        x_pos = (self.SCREEN_WIDTH // 2) - (self.BUTTON_SIZE // 2)
+        y_pos = (self.SCREEN_HEIGHT // 2) - (self.BUTTON_SIZE // 2)
+
+        self.next_button = button.Button("START GAME", x_pos, y_pos, 200, 60, (0, 150, 0), (0, 200, 0), (255, 255, 255))
+
+
     def handle_kitchen(self):
         
         for event in pygame.event.get():
