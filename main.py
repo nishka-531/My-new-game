@@ -156,7 +156,7 @@ class Game:
         self.screen.fill((40, 80, 40))
         self.next_button.draw(self.screen)
 
-        dressButton
+        dressButton = button.ImageButton(200, 200, 200, 200)
 
 
        
