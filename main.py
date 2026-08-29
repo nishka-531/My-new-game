@@ -67,7 +67,7 @@ class Game:
         # Start the game on the Menu screen
         self.current_state = GameState.START
 
-    def run(self):
+    async def run(self):
         while self.running:
             # Route processing based on the current Enum state
             if self.current_state == GameState.START:
@@ -85,7 +85,8 @@ class Game:
                 
             pygame.display.flip()
             self.clock.tick(60)
-            
+            await asyncio.sleep(0)
+
         pygame.quit()
         sys.exit()
 
@@ -214,7 +215,9 @@ class Game:
         # Show next button after visiting both sides
         if self.dogRightReq and self.dogLeftReq:
             self.next_button.draw(self.screen)
-        
+
 if __name__ == "__main__":
+    import asyncio
+
     game = Game()
-    game.run()
+    asyncio.run(game.run())
