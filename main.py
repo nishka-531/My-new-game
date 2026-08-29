@@ -48,6 +48,15 @@ class Game:
         y_pos = (self.SCREEN_HEIGHT // 2) - (100 // 2)
         self.start_button = button.Button("START GAME", x_pos, y_pos, 200, 60, (0, 150, 0), (0, 200, 0), (255, 255, 255))
 
+        self.dog_pos = [150, 800]
+        self.dog_speed = 5
+        self.dogRightReq = False
+        self.dogLeftReq = False
+
+        original_dog_sprite = pygame.image.load("dogSprite.png").convert_alpha()
+        self.dog_sprite = pygame.transform.scale(original_dog_sprite, (100, 100))
+        self.dog_rect = self.dog_sprite.get_rect(topleft=(150, 100))
+
         # Cooking buttons 
         self.flourButton = button.ImageButton(100, 175, 200, 200, "flour.png")
         self.sugarButton = button.ImageButton(100, 400, 200, 200, "sugar.png")
@@ -127,13 +136,6 @@ class Game:
             elif self.bakingPowderButton.is_clicked(event):
                 print("bakingPowderButton clicked")
                 self.bakingPowderButton.toggleClicked()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                print("other button")
-                self.flourButton.toggleClicked()
-                self.sugarButton.toggleClicked()
-                self.vanillaButton.toggleClicked()
-                self.bakingPowderButton.toggleClicked()
-                self.butterButton.toggleClicked()
 
         self.screen.blit(self.scaled_cooking_image, (0, 0))
         if(self.flourButton.getWasClicked() and 
@@ -179,9 +181,22 @@ class Game:
                 self.running = False
             if self.next_button.is_clicked(event):
                 self.current_state = GameState.START 
-        self.screen.blit(self.scaled_dog_image, (0, 0))
-        #self.next_button.draw(self.screen)
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+            self.dog_pos[0] -= self.dog_speed
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            self.dog_pos[0] += self.dog_speed
 
+        if(self.dog_pos[0] > 1150):
+            self.dogRightReq = True
+        if(self.dog_pos[0] < 50):
+            self.dogLeftReq = True
+
+        self.screen.blit(self.scaled_dog_image, self.dog_pos)
+        self.screen.blit(self.dog_sprite, self.dog_rect)
+        if(self.dogRightReq and self.dogLeftReq):
+            self.next_button.draw(self.screen)
+        
 if __name__ == "__main__":
     game = Game()
     game.run()
