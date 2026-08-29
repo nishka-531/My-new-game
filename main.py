@@ -41,6 +41,13 @@ class Game:
 
         self.next_button = button.Button("Next Module", 900, 600, 200, 60, (0, 150, 0), (0, 200, 0), (255, 255, 255))
 
+        # Cooking buttons 
+        self.flourButton = button.ImageButton(100, 175, 200, 200, "flour.png")
+        self.sugarButton = button.ImageButton(100, 400, 200, 200, "sugar.png")
+        self.vanillaButton = button.ImageButton(1000, 200, 200, 200, "vanilla.png")
+        self.bakingPowderButton = button.ImageButton(1000, 400, 200, 200, "bakingPowder.png")
+        self.butterButton = button.ImageButton(500, 500, 200, 200, "butter.png")
+
         # Start the game on the Menu screen
         self.current_state = GameState.START
 
@@ -97,55 +104,49 @@ class Game:
         self.next_button.draw(self.screen)
 
     def handle_cooking(self):
-        flourButton = button.ImageButton(200, 200, 200, 200, "flour.png")
-        sugarButton = button.ImageButton(200, 200, 200, 200, "sugar.png")
-        vanillaButton = button.ImageButton(200, 200, 200, 200, "vanilla.png")
-        bakingPowderButton = button.ImageButton(200, 200, 200, 200, "bakingPowder.png")
-        butterButton = button.ImageButton(800, 200, 200, 200, "butter.png")
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
             if self.next_button.is_clicked(event):
                 self.current_state = GameState.MALL
 
-            if butterButton.is_clicked(event):
+            if self.butterButton.is_clicked(event):
                 print("butterButton button Clicked")
-                butterButton.toggleClicked()
-            elif flourButton.is_clicked(event):
+                self.butterButton.toggleClicked()
+            elif self.flourButton.is_clicked(event):
                 print("flour button clicked")
-                flourButton.toggleClicked()
-            elif sugarButton.is_clicked(event):
+                self.flourButton.toggleClicked()
+            elif self.sugarButton.is_clicked(event):
                 print("sugar button clicked")
-                sugarButton.toggleClicked()
-            elif vanillaButton.is_clicked(event):
+                self.sugarButton.toggleClicked()
+            elif self.vanillaButton.is_clicked(event):
                 print("vanillaButton clicked")
-                vanillaButton.toggleClicked()
-            elif bakingPowderButton.is_clicked(event):
+                self.vanillaButton.toggleClicked()
+            elif self.bakingPowderButton.is_clicked(event):
                 print("bakingPowderButton clicked")
-                bakingPowderButton.toggleClicked()
+                self.bakingPowderButton.toggleClicked()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 print("other button")
-                flourButton.toggleClicked()
-                sugarButton.toggleClicked()
-                vanillaButton.toggleClicked()
-                bakingPowderButton.toggleClicked()
-                butterButton.toggleClicked()
-
-            if(flourButton.getWasClicked() and 
-               sugarButton.getWasClicked() and 
-               vanillaButton.getWasClicked() and 
-               bakingPowderButton.getWasClicked() and 
-               butterButton.getWasClicked()):
-                self.next_button.draw(self.screen)
-            else: 
-                flourButton.draw(self.screen)
-                sugarButton.draw(self.screen)
-                vanillaButton.draw(self.screen)
-                bakingPowderButton.draw(self.screen)
-                butterButton.draw(self.screen)
+                self.flourButton.toggleClicked()
+                self.sugarButton.toggleClicked()
+                self.vanillaButton.toggleClicked()
+                self.bakingPowderButton.toggleClicked()
+                self.butterButton.toggleClicked()
 
         self.screen.blit(self.scaled_cooking_image, (0, 0))
+        if(self.flourButton.getWasClicked() and 
+            self.sugarButton.getWasClicked() and 
+            self.vanillaButton.getWasClicked() and 
+            self.bakingPowderButton.getWasClicked() and 
+            self.butterButton.getWasClicked()):
+            self.next_button.draw(self.screen)
+        else: 
+            self.flourButton.draw(self.screen)
+            self.sugarButton.draw(self.screen)
+            self.vanillaButton.draw(self.screen)
+            self.bakingPowderButton.draw(self.screen)
+            self.butterButton.draw(self.screen)
+
 
     def handle_mall(self):
         for event in pygame.event.get():

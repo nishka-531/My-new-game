@@ -47,7 +47,6 @@ class ImageButton:
     def is_clicked(self, event): 
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
             if self.image_rect.collidepoint(event.pos): 
-                self.toggleClicked() 
                 return True 
             return False 
     def toggleClicked(self): 
