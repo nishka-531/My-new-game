@@ -1,62 +1,102 @@
 import pygame
 import sys
+from enum import Enum, auto
 
-# 1. Initialize Pygame
-pygame.init()
+# 1. Define your states using auto()
+class GameState(Enum):
+    START = auto()
+    KITCHEN = auto()
+    MALL = auto()
 
-# 2. Game Constants & Setup
-SCREEN_WIDTH = 1200
-SCREEN_HEIGHT = 900
-FPS = 60
+# 2. Main Game Class
+class Game:
+    def __init__(self):
+        pygame.init()
 
-# Colors (RGB)
-BG_COLOR = (150, 234, 255)      # light blue
-PLAYER_COLOR = (255, 255, 255) # Mint white
+        self.SCREEN_WIDTH = 1200
+        self.SCREEN_HEIGHT = 900
+        self.FPS = 60
+        
+        self.screen = pygame.display.set_mode((self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
+        pygame.display.set_caption("The Perfect Day")
+        self.clock = pygame.time.Clock()
+        self.running = True
 
-# Create the display window
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption("My Pygame Masterpiece")
+        original_kitchen_image = pygame.image.load("kitchen.png").convert()
+        self.scaled_kitchen_image = pygame.transform.scale(original_kitchen_image, (self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
+        
+        # Start the game on the Menu screen
+        self.current_state = GameState.KITCHEN
 
-# Game Clock to control frame rate
-clock = pygame.time.Clock()
+    def run(self):
+        while self.running:
+            # Route processing based on the current Enum state
+            if self.current_state == GameState.START:
+                self.handle_start()
+            elif self.current_state == GameState.KITCHEN:
+                self.handle_kitchen()
+            elif self.current_state == GameState.MALL:
+                self.handle_mall()
+                
+            pygame.display.flip()
+            self.clock.tick(60)
+            
+        pygame.quit()
+        sys.exit()
 
-# Example state variables
-player_pos = [SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2]
-player_speed = 5
+    # --- STATE HANDLERS ---
 
-# 3. Main Game Loop
-running = True
-while running:
-    # --- EVENT HANDLING (Inputs) ---
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+    def handle_start(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
 
-    # --- GAME LOGIC (Updates) ---
-    # Handle continuous keyboard input
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_LEFT] or keys[pygame.K_a]:
-        player_pos[0] -= player_speed
-    if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
-        player_pos[0] += player_speed
-    if keys[pygame.K_UP] or keys[pygame.K_w]:
-        player_pos[1] -= player_speed
-    if keys[pygame.K_DOWN] or keys[pygame.K_s]:
-        player_pos[1] += player_speed
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    # Switch state instantly
+                    self.current_state = GameState.KITCHEN 
+        self.screen.fill((0, 0, 40)) 
 
-    # --- DRAWING / RENDERING ---
-    # Wipe the screen clean from the last frame
-    screen.fill(BG_COLOR)
+    def handle_kitchen(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    # Die or fail game
+                    self.current_state = GameState.MALL 
 
-    # Draw the player (a simple circle)
-    pygame.draw.circle(screen, PLAYER_COLOR, player_pos, 20)
+        self.screen.blit(self.scaled_kitchen_image, (0, 0))
+        #self.screen.fill((40, 80, 40)) # Green background for playing
+        # (Update game objects and draw them here)
 
-    # Flip the display buffer to show changes on screen
-    pygame.display.flip()
+    def handle_mall(self):
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        # Die or fail game
+                        self.current_state = GameState.START 
+    
+            self.screen.fill((40, 80, 40)) # Green background for playing
+            # (Update game objects and draw them here)
 
-    # --- FRAME RATE CONTROL ---
-    clock.tick(FPS)
+    def handle_game_over(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                self.running = False
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_r:
+                    # Restart the game
+                    self.current_state = GameState.START
+                elif event.key == pygame.K_m:
+                    # Return to main menu
+                    self.current_state = GameState.START
 
-# 4. Clean Shutdown
-pygame.quit()
-sys.exit()
+        self.screen.fill((80, 30, 30)) # Red background for game over
+        # (Draw "Game Over - Press R to Restart" text here)
+
+if __name__ == "__main__":
+    game = Game()
+    game.run()
