@@ -40,6 +40,9 @@ class Game:
         #self.scaled_dog_image = pygame.transform.scale(original_dog_image, (self.SCREEN_WIDTH, self.SCREEN_HEIGHT))
 
         self.next_button = button.Button("Next Module", 900, 600, 200, 60, (0, 150, 0), (0, 200, 0), (255, 255, 255))
+        x_pos = (self.SCREEN_WIDTH // 2) - (100 // 2)
+        y_pos = (self.SCREEN_HEIGHT // 2) - (100 // 2)
+        self.start_button = button.Button("START GAME", x_pos, y_pos, 200, 60, (0, 150, 0), (0, 200, 0), (255, 255, 255))
 
         # Cooking buttons 
         self.flourButton = button.ImageButton(100, 175, 200, 200, "flour.png")
@@ -84,14 +87,6 @@ class Game:
 
         pygame.display.flip()
         self.clock.tick(60)
-
-        self.BUTTON_SIZE = 100
-
-        x_pos = (self.SCREEN_WIDTH // 2) - (self.BUTTON_SIZE // 2)
-        y_pos = (self.SCREEN_HEIGHT // 2) - (self.BUTTON_SIZE // 2)
-
-        self.start_button = button.Button("START GAME", x_pos, y_pos, 200, 60, (0, 150, 0), (0, 200, 0), (255, 255, 255))
-
 
     def handle_kitchen(self):
 
@@ -139,6 +134,7 @@ class Game:
             self.vanillaButton.getWasClicked() and 
             self.bakingPowderButton.getWasClicked() and 
             self.butterButton.getWasClicked()):
+            pygame.draw.circle(self.screen, (237, 197, 123), [500, 350], 40)
             self.next_button.draw(self.screen)
         else: 
             self.flourButton.draw(self.screen)
