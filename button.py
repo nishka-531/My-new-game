@@ -30,3 +30,19 @@ class Button:
             if self.rect.collidepoint(event.pos):
                 return True
         return False
+
+class ImegeButton:
+    def __init__(self, x, y, width, height, imegePath):
+        self.x = x
+        self.y = y
+        image = pygame.image.load(imegePath).convert()
+        self.image = pygame.transform.scale(image, (width, height))
+
+    def draw(self, surface):
+        surface.blit(self.scaled_kitchen_image, (self.x, self.y))
+
+    def is_clicked(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            if self.imege.collidepoint(event.pos):
+                return True
+        return False
