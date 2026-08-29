@@ -21,7 +21,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
         if start_button.is_clicked(event):
-            print("Button Clicked! Start the game logic here.")
+                print("Button Clicked! Start the game logic here.")
 
     screen.blit(scaled_image, (0, 0))
     start_button.draw(screen)

@@ -31,18 +31,28 @@ class Button:
                 return True
         return False
 
-class ImegeButton:
-    def __init__(self, x, y, width, height, imegePath):
-        self.x = x
-        self.y = y
-        image = pygame.image.load(imegePath).convert()
-        self.image = pygame.transform.scale(image, (width, height))
+class ImageButton: 
+    def __init__(self, x, y, width, height, imagePath):
+        self.x = x 
+        self.y = y 
+        self.width = width 
+        self.height = height 
+        image = pygame.image.load(imagePath).convert_alpha() 
+        self.image = pygame.transform.scale(image, (width, height)) 
+        # Rectangle used for positioning and detecting clicks 
+        self.image_rect = self.image.get_rect(topleft=(x, y)) 
+        self.wasClicked = False 
+    def draw(self, surface): 
+        surface.blit(self.image, self.image_rect) 
+    def is_clicked(self, event): 
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1: 
+            if self.image_rect.collidepoint(event.pos): 
+                self.toggleClicked() 
+                return True 
+            return False 
+    def toggleClicked(self): 
+        self.wasClicked = not self.wasClicked
+    def getWasClicked(self):
+        return self.wasClicked
 
-    def draw(self, surface):
-        surface.blit(self.scaled_kitchen_image, (self.x, self.y))
 
-    def is_clicked(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            if self.imege.collidepoint(event.pos):
-                return True
-        return False
