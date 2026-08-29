@@ -159,6 +159,8 @@ class Game:
 
         self.screen.blit(self.scaled_mall_image, (0, 0))
 
+        self.next_button.draw(self.screen)
+
 
        
 
