@@ -179,22 +179,40 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+
             if self.next_button.is_clicked(event):
-                self.current_state = GameState.START 
+                self.current_state = GameState.START
+
+        # Move dog
         keys = pygame.key.get_pressed()
+
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             self.dog_pos[0] -= self.dog_speed
+
         if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
             self.dog_pos[0] += self.dog_speed
 
-        if(self.dog_pos[0] > 1150):
+        # Keep dog on screen
+        self.dog_pos[0] = max(
+            0,
+            min(self.dog_pos[0], self.SCREEN_WIDTH - 100)
+        )
+
+        # Check if dog reached both sides
+        if self.dog_pos[0] >= self.SCREEN_WIDTH - 100:
             self.dogRightReq = True
-        if(self.dog_pos[0] < 50):
+
+        if self.dog_pos[0] <= 0:
             self.dogLeftReq = True
 
-        self.screen.blit(self.scaled_dog_image, self.dog_pos)
-        self.screen.blit(self.dog_sprite, self.dog_rect)
-        if(self.dogRightReq and self.dogLeftReq):
+        # Draw background
+        self.screen.blit(self.scaled_dog_image, (0, 0))
+
+        # Draw moving dog
+        self.screen.blit(self.dog_sprite, self.dog_pos)
+
+        # Show next button after visiting both sides
+        if self.dogRightReq and self.dogLeftReq:
             self.next_button.draw(self.screen)
         
 if __name__ == "__main__":
